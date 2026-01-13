@@ -23,7 +23,7 @@ function ResumeUpload() {
      
       // 1️⃣ Upload resume
       const uploadRes = await axios.post(
-        "http://127.0.0.1:8000/api/upload-resume/",
+        "https://ai-resume-job-recommender.onrender.com/api/upload-resume/",
         formData,
         { headers: {
             "Content-Type": "multipart/form-data",
@@ -32,10 +32,11 @@ function ResumeUpload() {
       );
 
       const resumeId = uploadRes.data.id;
+      console.log(uploadRes.data)
 
       // 2️⃣ Analyze resume
       const analyzeRes = await axios.post(
-        `http://127.0.0.1:8000/api/analyze-resume/${resumeId}/`
+        `https://ai-resume-job-recommender.onrender.com/api/analyze-resume/${resumeId}/`
       );
  
       console.log(analyzeRes.data)
