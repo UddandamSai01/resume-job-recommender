@@ -24,13 +24,31 @@ def get_resume(request, id):
     serializer = ResumeSerializer(resume)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 def upload_resume_file(request):
-    serializer= ResumeSerializer(data=request.data)
-    if serializer.is_valid():
-        resume=serializer.save()
-        return Response({'message': 'Resume file uploaded successfully', 'id': resume.id}, status=201)
-    return Response(serializer.errors, status=400)
+    try:
+        if "resume_file" not in request.FILES:
+            return Response(
+                {"error": "No file uploaded."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        resume = Resume.objects.create(
+            resume_file=request.FILES["resume_file"]
+        )
+
+        return Response(
+            {"message": "Resume file uploaded successfully", "id": resume.id},
+            status=status.HTTP_201_CREATED
+        )
+
+    except Exception as e:
+        return Response(
+            {"error": str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
 
 
 @api_view(['GET', 'POST'])
