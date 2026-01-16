@@ -2,40 +2,50 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Resume,Job
-from .serializers import ResumeSerializer
-import os,re
-from .utils import extract_text_from_pdf, extract_text_from_docx, extract_skills, match_resume_to_job
+import os, re
+
+from .models import Resume, Job
+from .serializers import ResumeSerializer, JobSerializer
+from .utils import extract_text, extract_skills_from_resume, match_resume_to_job
 
 
-# Create your views here.
-
-@api_view(['POST'])
-def create_resume(request):
-    serializer = ResumeSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+# ---------- BASIC GET APIS ----------
 
 @api_view(['GET'])
 def get_resume(request, id):
-    resume = Resume.objects.get(id=id)
+    try:
+        resume = Resume.objects.get(id=id)
+    except Resume.DoesNotExist:
+        return Response({"error": "Resume not found."}, status=status.HTTP_404_NOT_FOUND)
+
     serializer = ResumeSerializer(resume)
     return Response(serializer.data)
 
 
-@api_view(['POST'])
-def upload_resume_file(request):
+@api_view(['GET'])
+def get_job(request, id):
     try:
-        if "resume_file" not in request.FILES:
+        job = Job.objects.get(id=id)
+    except Job.DoesNotExist:
+        return Response({"error": "Job not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = JobSerializer(job)
+    return Response(serializer.data)
+
+
+# ---------- UPLOAD RESUME ----------
+
+@api_view(['POST'])
+def upload_resume(request):
+    try:
+        if "resume" not in request.FILES:
             return Response(
                 {"error": "No file uploaded."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         resume = Resume.objects.create(
-            resume_file=request.FILES["resume_file"]
+            resume=request.FILES["resume"]
         )
 
         return Response(
@@ -50,11 +60,12 @@ def upload_resume_file(request):
         )
 
 
+# ---------- ANALYZE RESUME ----------
 
 @api_view(['GET', 'POST'])
 def analyze_resume(request, resume_id):
     try:
-        # 1️⃣ Check if resume exists
+        # 1️⃣ Check resume exists
         try:
             resume = Resume.objects.get(id=resume_id)
         except Resume.DoesNotExist:
@@ -63,14 +74,14 @@ def analyze_resume(request, resume_id):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # 2️⃣ Check if file exists
-        if not resume.resume_file:
+        # 2️⃣ Check file exists
+        if not resume.resume:
             return Response(
                 {"error": "No resume file uploaded."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        file_path = resume.resume_file.path
+        file_path = resume.resume.path
 
         if not os.path.exists(file_path):
             return Response(
@@ -78,28 +89,24 @@ def analyze_resume(request, resume_id):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # 3️⃣ Check file type
-        ext = os.path.splitext(file_path)[1].lower()
-
-        if ext == ".pdf":
-            text = extract_text_from_pdf(file_path)
-        elif ext in [".doc", ".docx"]:
-            text = extract_text_from_docx(file_path)
-        else:
+        # 3️⃣ Extract text (clean professional way)
+        try:
+            text = extract_text(file_path)
+        except ValueError as e:
             return Response(
-                {"error": "Unsupported file format. Please upload PDF or DOC/DOCX."},
+                {"error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 4️⃣ Check if text extraction worked
+        # 4️⃣ Validate extracted text
         if not text or text.strip() == "":
             return Response(
                 {"error": "Could not extract text from resume."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 5️⃣ Extract skills
-        skills = extract_skills(text)
+        # 5️⃣ Extract skills from resume
+        skills = extract_skills_from_resume(text)
 
         if not skills:
             return Response(
@@ -107,38 +114,40 @@ def analyze_resume(request, resume_id):
                 status=status.HTTP_200_OK
             )
 
-        # 6️⃣ Match with jobs
+        # 6️⃣ Helper to clean job skills text
         def clean_job_skills(text):
             text = text.lower()
             text = re.sub(r"[\/()]", ",", text)
             text = text.replace("and", "")
-
             skills = [s.strip() for s in text.split(",") if s.strip()]
             return skills
-        
+
+        # 7️⃣ Match resume with all jobs
         recommendations = []
+
         for job in Job.objects.all():
-            job_skills = clean_job_skills(job.requiredskills)
+            job_skills = clean_job_skills(job.job_requried_skills)
             score, matched = match_resume_to_job(skills, job_skills)
 
             recommendations.append({
-                "job": job.title,
-                "company": job.company,
-                "Description":job.description,
-                "applyLink": job.applylink,
+                "job": job.job_title,
+                "company": job.company_name,
+                "description": job.job_description,
+                "applyLink": job.job_apply_link,
+                "location": job.job_location,
+                "salary": job.job_salary_range,
+                "required_skills": job_skills,
                 "match_score": score,
                 "matched_skills": matched,
-                "required_skills": job_skills
             })
 
-        # 7️⃣ Final success response
+        # 8️⃣ Final response
         return Response({
             "extracted_skills": skills,
             "recommendations": recommendations
         }, status=status.HTTP_200_OK)
 
     except Exception as e:
-        # 8️⃣ Catch any unexpected error
         return Response(
             {"error": f"Something went wrong: {str(e)}"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
