@@ -1,4 +1,4 @@
-import os
+import os,re
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -53,8 +53,11 @@ def analyze_resume(request, resume_id):
     recommendations = []
 
     for job in Job.objects.all():
-        job_skills = job.job_required_skills.split(",")
-        job_skills = [skill.strip().lower() for skill in job_skills if skill.strip()]
+        raw = job.job_required_skills.lower()
+        raw = re.sub(r"[()/]", ",", raw)
+        raw = raw.replace(" and ", ",")
+        job_skills = [s.strip() for s in raw.split(",") if s.strip()]
+
         score, matched = match_resume_to_job(resume_skills, job_skills)
 
         recommendations.append({

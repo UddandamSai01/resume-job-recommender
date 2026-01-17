@@ -13,7 +13,7 @@ function ResumeUpload() {
     if (!file) return alert("Please select a file");
 
     const formData = new FormData();
-    formData.append("resume", file); // ✅ FIXED
+    formData.append("resume_file", file);
 
     try {
       setLoading(true);
@@ -32,7 +32,7 @@ function ResumeUpload() {
       const resumeId = uploadRes.data.id;
 
       // 2️⃣ Analyze resume
-      const analyzeRes = await axios.post(
+      const analyzeRes = await axios.get(
         `http://127.0.0.1:8000/api/analyze-resume/${resumeId}/`
       );
 
@@ -69,7 +69,7 @@ function ResumeUpload() {
               style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}
             >
               <p>
-                <b>{job.job}</b> – {job.company}
+                <b>Company Name{job.job}</b> – {job.company}
               </p>
 
               <p>Match Score: {job.match_score}%</p>
@@ -90,15 +90,16 @@ function ResumeUpload() {
 
               <p>
                 <a
-                  href={job.applyLink}
+                  href={job.apply_link}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Apply Here
                 </a>
               </p>
-
-              <p>{job.Description}</p>
+              <p>Salary: {job.salary}</p>
+              <p>Job Description: {job.description}</p>
+              <p>Location: {job.location}</p>
             </div>
           ))}
         </div>
