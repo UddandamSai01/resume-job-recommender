@@ -90,7 +90,9 @@ WSGI_APPLICATION = 'airesume.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("postgresql://airesume_user:mxLO3dVLKHrKNYZCbrcX3h21C6oVHaZQ@dpg-d5ln097gi27c73919en0-a/airesume_db_4raj"))
+    "default": dj_database_url.parse(
+        os.environ.get("DATABASE_URL")
+    )
 }
 
 
