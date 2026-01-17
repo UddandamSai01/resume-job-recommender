@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,8 @@ SECRET_KEY = 'django-insecure-5e^$9aqy88_gj%p(2r@a$2x_$qve#otg0tf8+ie^om!-&qw2yy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", ".onrender.com"]
+
 
 
 # Application definition
@@ -58,9 +61,6 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = True
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_HEADERS = True
-CORS_ALLOW_ALL_METHODS = True
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -90,15 +90,9 @@ WSGI_APPLICATION = 'airesume.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'airesume_db',
-        'USER': 'root',
-        'PASSWORD': 'tiger',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+    'default': dj_database_url.parse(os.environ.get("postgresql://airesume_user:mxLO3dVLKHrKNYZCbrcX3h21C6oVHaZQ@dpg-d5ln097gi27c73919en0-a/airesume_db_4raj"))
 }
+
 
 
 # Password validation
