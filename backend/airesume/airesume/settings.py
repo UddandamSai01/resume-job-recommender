@@ -59,7 +59,6 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware", 
 ]
 
-CORS_ALLOWED_ORIGINS = True
 
 
 MEDIA_URL = "/media/"
@@ -134,3 +133,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+CORS_ALLOWED_ORIGINS = [
+    "https://ai-resume-job-recommender.vercel.app",
+]
+
+CORS_ALLOW_CREDENTIALS = True
