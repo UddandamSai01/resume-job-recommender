@@ -7,6 +7,9 @@ function ResumeUpload() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const API = "https://ai-resume-job-recommender-1.onrender.com";
+
+
   const handleUpload = async () => {
     setResult(null);
 
@@ -20,7 +23,7 @@ function ResumeUpload() {
 
       // 1️⃣ Upload resume
       const uploadRes = await axios.post(
-        "http://127.0.0.1:8000/api/upload-resume/",
+        `${API}/api/upload-resume/`,
         formData,
         {
           headers: {
@@ -33,7 +36,7 @@ function ResumeUpload() {
 
       // 2️⃣ Analyze resume
       const analyzeRes = await axios.get(
-        `http://127.0.0.1:8000/api/analyze-resume/${resumeId}/`
+        `${API}/api/analyze-resume/${resumeId}/`
       );
 
       setLoading(false);
