@@ -103,6 +103,7 @@ function ResumeUpload() {
               <p>Salary: {job.salary}</p>
               <p>Job Description: {job.description}</p>
               <p>Location: {job.location}</p>
+            {console.log(job)}
             </div>
           ))}
         </div>
