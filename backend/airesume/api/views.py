@@ -25,6 +25,7 @@ def create_admin(request):
     return Response({"msg": "Admin created"})
 
 
+
 @api_view(["POST"])
 def upload_resume_file(request):
     if "resume_file" not in request.FILES:
