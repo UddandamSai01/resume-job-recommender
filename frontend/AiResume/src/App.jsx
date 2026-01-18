@@ -1,14 +1,16 @@
-import React from 'react'
-import ResumeUpload from './ResumeUpload.jsx'
-import Loader from './Loader.jsx'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ResumeUpload from "./ResumeUpload";
+import Jobs from "./Jobs";
 
-export default function App() {
+function App() {
   return (
-    <div style={{padding:"30px"}}>
-      <h1>AI Resume Analyzer</h1>
-      <ResumeUpload />
-      {/* <Loader/> */}
-    </div>
-    
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ResumeUpload />} />
+        <Route path="/jobs" element={<Jobs />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
+export default App;

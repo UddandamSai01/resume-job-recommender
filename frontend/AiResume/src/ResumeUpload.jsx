@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import Loader from "./Loader.jsx";
+import { useNavigate } from "react-router-dom";
+
 
 function ResumeUpload() {
   const [file, setFile] = useState(null);
@@ -8,9 +10,12 @@ function ResumeUpload() {
   const [loading, setLoading] = useState(false);
 
   const API = "https://ai-resume-job-recommender-1.onrender.com";
+  const navigate = useNavigate();
 
 
   const handleUpload = async () => {
+    
+
     setResult(null);
 
     if (!file) return alert("Please select a file");
@@ -40,6 +45,10 @@ function ResumeUpload() {
       );
 
       setLoading(false);
+      // small delay for loader effect
+      setTimeout(() => {
+        navigate("/jobs", { state: analyzeRes.data });
+      }, 1500);
       setResult(analyzeRes.data);
 
     } catch (err) {
@@ -50,66 +59,42 @@ function ResumeUpload() {
   };
 
   return (
-    <div>
-      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-      <button onClick={handleUpload}>Analyze Resume</button>
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4">
+    <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-xl text-center">
+
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+        AI Resume Analyzer
+      </h1>
+
+      <p className="text-gray-500 mb-6">
+        Upload your resume and get AI-powered job recommendations
+      </p>
+
+      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-6">
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+          className="block w-full text-sm text-gray-500
+          file:mr-4 file:py-2 file:px-4
+          file:rounded-lg file:border-0
+          file:text-sm file:font-semibold
+          file:bg-blue-50 file:text-blue-700
+          hover:file:bg-blue-100"
+        />
+      </div>
+
+      <button
+        onClick={handleUpload}
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
+      >
+        Analyze Resume
+      </button>
 
       {loading && <Loader />}
-
-      {result && (
-        <div>
-          <h3>Your Skills</h3>
-          <ul>
-            {result.extracted_skills.map((s, i) => (
-              <li key={i}>{s}</li>
-            ))}
-          </ul>
-
-          <h3>Job Recommendations</h3>
-          {result.recommendations.map((job, i) => (
-            <div
-              key={i}
-              style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}
-            >
-              <p>
-                <b>Company Name{job.job}</b> – {job.company}
-              </p>
-
-              <p>Match Score: {job.match_score}%</p>
-
-              <p>
-                Matched Skills:{" "}
-                {Array.isArray(job.matched_skills)
-                  ? job.matched_skills.join(", ")
-                  : job.matched_skills}
-              </p>
-
-              <p>
-                Required Skills:{" "}
-                {Array.isArray(job.required_skills)
-                  ? job.required_skills.join(", ")
-                  : job.required_skills}
-              </p>
-
-              <p>
-                <a
-                  href={job.apply_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Apply Here
-                </a>
-              </p>
-              <p>Salary: {job.salary}</p>
-              <p>Job Description: {job.description}</p>
-              <p>Location: {job.location}</p>
-            {console.log(job)}
-            </div>
-          ))}
-        </div>
-      )}
     </div>
-  );
+  </div>
+);
+
 }
 
 export default ResumeUpload;
