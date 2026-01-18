@@ -2,7 +2,7 @@ import os,re
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-
+from django.contrib.auth.models import User
 from .models import Resume, Job
 from .utils import (
     extract_text_from_pdf,
@@ -10,6 +10,19 @@ from .utils import (
     extract_skills,
     match_resume_to_job
 )
+
+
+@api_view(["GET"])
+def create_admin(request):
+    if User.objects.filter(username="admin").exists():
+        return Response({"msg": "Admin already exists"})
+
+    User.objects.create_superuser(
+        username="admin",
+        password="admin123",
+        email="admin@example.com"
+    )
+    return Response({"msg": "Admin created"})
 
 
 @api_view(["POST"])
