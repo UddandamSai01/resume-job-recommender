@@ -1,10 +1,22 @@
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import JobModal from "./JobModal";
 
 export default function Jobs() {
-  const { state } = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+
+  useEffect(() => {
+    // If user comes directly without data → redirect to home
+    if (!location.state) {
+      navigate("/");
+    } else {
+      setJobs(location.state.recommendations);
+    }
+  }, [location, navigate]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -13,7 +25,7 @@ export default function Jobs() {
       </h2>
 
       <div className="grid gap-6 max-w-5xl mx-auto">
-        {state.recommendations.map((job, i) => (
+        {jobs.map((job, i) => (
           <div key={i} className="bg-white rounded-xl shadow-md p-6">
 
             <h3 className="text-xl font-bold text-center mb-4">

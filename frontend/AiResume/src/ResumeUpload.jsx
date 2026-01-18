@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 function ResumeUpload() {
   const [file, setFile] = useState(null);
-  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const API = "https://ai-resume-job-recommender-1.onrender.com";
@@ -14,9 +13,6 @@ function ResumeUpload() {
 
 
   const handleUpload = async () => {
-    
-
-    setResult(null);
 
     if (!file) return alert("Please select a file");
 
@@ -49,7 +45,6 @@ function ResumeUpload() {
       setTimeout(() => {
         navigate("/jobs", { state: analyzeRes.data });
       }, 1500);
-      setResult(analyzeRes.data);
 
     } catch (err) {
       console.error(err);
