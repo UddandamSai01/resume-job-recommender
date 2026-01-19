@@ -9,7 +9,8 @@ export default function Jobs() {
   const getScoreColor = (score) => {
     if (score >= 71) return "green";
     if (score >= 50) return "orange";
-    return "red";
+    if (0 <= score < 50) return "red";
+    return "gray";
   };
 
 
