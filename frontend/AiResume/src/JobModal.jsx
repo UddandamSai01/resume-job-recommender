@@ -1,35 +1,40 @@
-export default function JobModal({ job, close }) {
+import "./JobModal.css";
+
+function JobModal({ job, onClose }) {
+  if (!job) return null;
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-container"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="modal-header">
+          <h2>{job.company}</h2>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
 
-      <div className="bg-white rounded-xl w-full max-w-2xl p-6 relative">
+        {/* Scrollable Body */}
+        <div className="modal-body">
+          <p>{job.description}</p>
 
-        <button
-          onClick={close}
-          className="absolute top-3 right-3 text-xl font-bold text-gray-500 hover:text-red-500"
-        >
-          ✕
-        </button>
+          <h4>Matched Skills</h4>
+          <p style={{ color: "green" }}>
+            {job.matched_skills.join(", ")}
+          </p>
 
-        <h2 className="text-2xl font-bold mb-4">{job.job}</h2>
+          <h4>Required Skills</h4>
+          <p>{job.required_skills.join(", ")}</p>
+        </div>
 
-        <p className="mb-4 text-gray-600">{job.description}</p>
-
-        <h4 className="font-semibold">Matched Skills</h4>
-        <p className="mb-3 text-green-600">
-          {job.matched_skills.join(", ")}
-        </p>
-
-        <h4 className="font-semibold">Required Skills</h4>
-        <p className="mb-6 text-gray-700">
-          {job.required_skills.join(", ")}
-        </p>
-
-        <div className="text-right">
+        {/* Footer */}
+        <div className="modal-footer">
           <a
             href={job.apply_link}
             target="_blank"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+            rel="noopener noreferrer"
+            className="apply-btn"
           >
             Apply Now
           </a>
@@ -38,3 +43,5 @@ export default function JobModal({ job, close }) {
     </div>
   );
 }
+
+export default JobModal;
