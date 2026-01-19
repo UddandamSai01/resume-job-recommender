@@ -40,14 +40,17 @@ export default function Jobs() {
             </h3>
 
             <div className="flex justify-between mb-2">
-              <span className="font-semibold">{job.job}</span>
+              <span className="font-semibold">{job.job_title}</span>
               <span className="text-gray-500">{job.location}</span>
             </div>
 
             <div className="flex justify-between mb-4">
               <span>💰 {job.salary}</span>
-              <span className="text-green-600 font-bold">
-                {job.match_score}% Match
+              <span>
+                <b>Match Score:</b>{" "}
+                <span style={{ color: getScoreColor(job.match_score || 0), fontWeight: "bold" }}>
+                  {job.match_score || 0}%
+                </span>
               </span>
             </div>
 
@@ -62,6 +65,7 @@ export default function Jobs() {
               <a
                 href={job.apply_link}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Apply
