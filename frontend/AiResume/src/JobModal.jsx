@@ -21,7 +21,7 @@ function JobModal({ job, onClose }) {
 
           <h4>Matched Skills</h4>
           <p style={{ color: "green" }}>
-            {job.matched_skills.join(", ")}
+            {job.matched_skills.join(", ") || "No Mateched Skills"}
           </p>
 
           <h4>Required Skills</h4>
