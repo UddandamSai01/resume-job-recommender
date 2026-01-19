@@ -67,30 +67,33 @@ def analyze_resume(request, resume_id):
     recommendations = []
 
     for job in Job.objects.all():
-        raw = job.job_required_skills.lower()
-        raw = re.sub(r"[()/]", ",", raw)
-        raw = raw.replace(" and ", ",")
-        job_skills = [s.strip() for s in raw.split(",") if s.strip()]
+        job_skills = re.split(r",|/| and ", job.job_required_skills.lower())
+        job_skills = [s.strip() for s in job_skills if s.strip()]
 
         score, matched = match_resume_to_job(resume_skills, job_skills)
 
-        recommendations.append({
-            "job_title": job.job_title,
-            "company": job.company_name,
-            "location": job.job_location,
-            "salary": job.job_salary,
-            "description": job.job_description,
-            "apply_link": job.job_apply_link,
-            "required_skills": sorted(job_skills),
-            "match_score": score,
-            "matched_skills": matched
-        })
+        # ✅ FILTER: only 50% and above
+        if score >= 50:
+            recommendations.append({
+                "job_title": job.job_title,
+                "company": job.company_name,
+                "location": job.job_location,
+                "salary": job.job_salary,
+                "description": job.job_description,
+                "apply_link": job.job_apply_link,
+                "required_skills": sorted(job_skills),
+                "match_score": score,
+                "matched_skills": matched
+            })
+
+    # sort best matches first
+    recommendations = sorted(
+        recommendations,
+        key=lambda x: x["match_score"],
+        reverse=True
+    )
 
     return Response({
         "extracted_skills": resume_skills,
-        "recommendations": sorted(
-            recommendations,
-            key=lambda x: x["match_score"],
-            reverse=True
-        )
+        "recommendations": recommendations
     })

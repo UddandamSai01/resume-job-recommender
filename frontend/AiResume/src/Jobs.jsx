@@ -6,6 +6,13 @@ export default function Jobs() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const getScoreColor = (score) => {
+    if (score >= 71) return "green";
+    if (score >= 50) return "orange";
+    return "red";
+  };
+
+
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
 
@@ -65,7 +72,7 @@ export default function Jobs() {
       </div>
 
       {selectedJob && (
-        <JobModal job={selectedJob} close={() => setSelectedJob(null)} />
+        <JobModal job={selectedJob} onClose={() => setSelectedJob(null)} />
       )}
     </div>
   );

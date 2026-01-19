@@ -34,7 +34,7 @@ function JobModal({ job, onClose }) {
             href={job.apply_link}
             target="_blank"
             rel="noopener noreferrer"
-            className="apply-btn"
+            className="apply-btn bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
           >
             Apply Now
           </a>
