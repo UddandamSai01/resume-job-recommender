@@ -1,7 +1,14 @@
-export default function Loader() {
+import "./Loader.css";
+
+function Loader() {
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="w-16 h-16 border-4 border-white border-t-blue-600 rounded-full animate-spin"></div>
+    <div className="loader-overlay">
+      <div className="loader-box">
+        <div className="spinner"></div>
+        <p>Analyzing your resume...</p>
+      </div>
     </div>
   );
 }
+
+export default Loader;

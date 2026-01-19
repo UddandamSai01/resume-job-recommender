@@ -11,7 +11,6 @@ function ResumeUpload() {
   const API = "https://ai-resume-job-recommender-1.onrender.com";
   const navigate = useNavigate();
 
-
   const handleUpload = async () => {
 
     if (!file) return alert("Please select a file");
