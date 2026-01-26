@@ -1,4 +1,3 @@
-from curses import raw
 import os,re
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -8,8 +7,7 @@ from .utils import (
     extract_text_from_pdf,
     extract_text_from_docx,
     extract_skills,
-    match_resume_to_job,
-    normalize_text
+    match_resume_to_job
 )
 
 
@@ -63,7 +61,9 @@ def analyze_resume(request, resume_id):
     recommendations = []
 
     for job in Job.objects.all():
-        raw = normalize_text(job.job_required_skills)
+        raw = job.job_required_skills.lower()
+        raw = re.sub(r"[()/]", ",", raw)
+        raw = raw.replace(" and ", ",")
         job_skills = [s.strip() for s in raw.split(",") if s.strip()]
 
         score, matched = match_resume_to_job(resume_skills, job_skills)
