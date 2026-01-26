@@ -7,7 +7,9 @@ from .utils import (
     extract_text_from_pdf,
     extract_text_from_docx,
     extract_skills,
-    match_resume_to_job
+    match_resume_to_job,
+    normalize_text,
+    SKILLS_DB,
 )
 
 
@@ -61,10 +63,13 @@ def analyze_resume(request, resume_id):
     recommendations = []
 
     for job in Job.objects.all():
-        raw = job.job_required_skills.lower()
-        raw = re.sub(r"[()/]", ",", raw)
-        raw = raw.replace(" and ", ",")
-        job_skills = [s.strip() for s in raw.split(",") if s.strip()]
+        
+        raw = normalize_text(job.job_required_skills)
+
+        job_skills = []
+        for skill in SKILLS_DB:
+            if skill in raw:
+                job_skills.append(skill)
 
         score, matched = match_resume_to_job(resume_skills, job_skills)
 

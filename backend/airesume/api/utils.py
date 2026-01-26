@@ -4,7 +4,7 @@ from docx import Document
 
 SKILLS_DB = {
     # -------- Software Development --------
-    "python", "java", "C", "c++", "c#", "javascript", "typescript",
+    "python", "java", "c", "c++", "c#", "javascript", "typescript",
     "html", "css", "bootstrap", "tailwind css",
     "react", "angular", "vue", "next.js",
     "node.js", "express.js",
