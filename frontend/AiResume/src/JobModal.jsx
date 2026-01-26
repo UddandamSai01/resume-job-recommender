@@ -25,7 +25,7 @@ function JobModal({ job, onClose }) {
           </p>
 
           <h4><strong>Required Skills:</strong></h4>
-          <p style={{color: "yellow"}}>
+          <p style={{color: "green"}}>
             {job.required_skills.join(", ")}
           </p>
         </div>
