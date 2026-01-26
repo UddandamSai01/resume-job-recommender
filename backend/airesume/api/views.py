@@ -67,9 +67,21 @@ def analyze_resume(request, resume_id):
         raw = normalize_text(job.job_required_skills)
 
         job_skills = []
+
         for skill in SKILLS_DB:
-            if skill in raw:
-                job_skills.append(skill)
+            skill = skill.lower().strip()
+
+            # Single-word skills (like c, sql, java)
+            if " " not in skill and "." not in skill and "+" not in skill and "#" not in skill:
+                pattern = rf"(?<![a-z0-9]){re.escape(skill)}(?![a-z0-9])"
+                if re.search(pattern, raw):
+                    job_skills.append(skill)
+
+            # Multi-word / special skills
+            else:
+                if re.search(rf"(?<![a-z0-9]){re.escape(skill)}(?![a-z0-9])", raw):
+                    job_skills.append(skill)
+
 
         score, matched = match_resume_to_job(resume_skills, job_skills)
 
