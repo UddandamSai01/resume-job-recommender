@@ -19,13 +19,15 @@ function JobModal({ job, onClose }) {
         <div className="modal-body">
           <p>{job.description}</p>
 
-          <h4>Matched Skills</h4>
+          <h4><strong>Matched Skills:</strong></h4>
           <p style={{ color: "green" }}>
             {job.matched_skills.join(", ") || "No Mateched Skills"}
           </p>
 
-          <h4>Required Skills</h4>
-          <p>{job.required_skills.join(", ")}</p>
+          <h4><strong>Required Skills:</strong></h4>
+          <p style={{color: "yellow"}}>
+            {job.required_skills.join(", ")}
+          </p>
         </div>
 
         {/* Footer */}
