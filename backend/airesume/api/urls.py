@@ -4,6 +4,5 @@ from .views import upload_resume_file, analyze_resume, create_admin
 urlpatterns = [
     path("upload-resume/", upload_resume_file, name="upload_resume"),
     path("analyze-resume/<int:resume_id>/", analyze_resume, name="analyze_resume"),
-    path("create-admin/", create_admin, name="create_admin"),
     
 ]

@@ -1,29 +1,16 @@
+from curses import raw
 import os,re
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.models import User
 from .models import Resume, Job
 from .utils import (
     extract_text_from_pdf,
     extract_text_from_docx,
     extract_skills,
-    match_resume_to_job
+    match_resume_to_job,
+    normalize_text
 )
-
-
-@api_view(["GET"])
-def create_admin(request):
-    if User.objects.filter(username="admin").exists():
-        return Response({"msg": "Admin already exists"})
-
-    User.objects.create_superuser(
-        username="admin",
-        password="admin123",
-        email="admin@example.com"
-    )
-    return Response({"msg": "Admin created"})
-
 
 
 @api_view(["POST"])
@@ -31,7 +18,16 @@ def upload_resume_file(request):
     if "resume_file" not in request.FILES:
         return Response({"error": "No file uploaded"}, status=400)
 
-    resume = Resume.objects.create(resume_file=request.FILES["resume_file"])
+    file = request.FILES["resume_file"]
+
+    # Basic validation for file size
+    if file.size > 2 * 1024 * 1024:
+        return Response(
+            {"error": "File too large. Max 2MB allowed"},
+            status=400
+        )
+
+    resume = Resume.objects.create(resume_file=file)
     return Response({"message": "Uploaded successfully", "id": resume.id}, status=201)
 
 
@@ -67,9 +63,7 @@ def analyze_resume(request, resume_id):
     recommendations = []
 
     for job in Job.objects.all():
-        raw = job.job_required_skills.lower()
-        raw = re.sub(r"[()/]", ",", raw)
-        raw = raw.replace(" and ", ",")
+        raw = normalize_text(job.job_required_skills)
         job_skills = [s.strip() for s in raw.split(",") if s.strip()]
 
         score, matched = match_resume_to_job(resume_skills, job_skills)
