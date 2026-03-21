@@ -8,7 +8,8 @@ function ResumeUpload() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API = "https://ai-resume-job-recommender-1.onrender.com";
+  const API = "https://ai-resume-job-recommender-nr9o.onrender.com";
+  
   const navigate = useNavigate();
 
   const handleUpload = async () => {
