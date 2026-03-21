@@ -3,4 +3,6 @@ djangorestframework
 django-cors-headers
 gunicorn
 whitenoise
-pymysql
+dj-database-url
+psycopg2-binary
+setuptools
