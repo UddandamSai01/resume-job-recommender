@@ -44,7 +44,7 @@ function ResumeUpload() {
       // small delay for loader effect
       setTimeout(() => {
         navigate("/jobs", { state: analyzeRes.data });
-      }, 1500);
+      }, 1000);
 
     } catch (err) {
       console.error(err);
