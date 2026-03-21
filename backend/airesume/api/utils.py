@@ -43,20 +43,20 @@ SKILLS_DB = {
     "microcontrollers", "arduino", "raspberry pi",
     "vlsi", "verilog", "system verilog", "fpga",
     "matlab", "simulink", "power electronics",
-    "control systems", "signal processing","power systems",
+    "control systems", "signal processing", "power systems",
     "digital electronics", "analog electronics", "pcb design",
-    "electrical","electrical machines",
+    "electrical machines",
 
     # -------- Mechanical --------
     "autocad", "solidworks", "catia", "ansys",
-    "manufacturing", "production ", "quality", 
+    "manufacturing", "production", "quality",
     "thermodynamics", "fluid mechanics",
-    "machine design", "industrial engineering","mechanical",
+    "machine design", "industrial engineering",
 
     # -------- Civil --------
     "staad pro", "etabs", "autocad civil",
     "construction management", "surveying",
-    "structural engineering", "geotechnical engineering","civil",
+    "structural engineering", "geotechnical engineering",
 
     # -------- Business / Management --------
     "business analysis", "project management",
@@ -70,11 +70,9 @@ SKILLS_DB = {
     "postman", "swagger",
     "confluence",
 
-    #--------- common skills---------
+    # --------- common skills ---------
     "communication", "teamwork", "problem-solving",
-    "site management", "Enginnering", "leadership", "time management",
-
-
+    "site management", "engineering", "leadership", "time management",
 }
 
 
