@@ -21,13 +21,13 @@ SKILLS_DB = {
     "nlp", "natural language processing",
     "pandas", "numpy", "matplotlib", "seaborn",
     "scikit-learn", "tensorflow", "keras", "pytorch",
-    "power bi", "tableau", "excel",
+    "power bi", "tableau", "excel", "sklearn", "ml",
 
     # -------- Cloud & DevOps --------
     "aws", "azure", "google cloud", "gcp",
     "docker", "kubernetes", "jenkins", "github actions",
     "terraform", "ansible",
-    "ci/cd", "linux", "bash", "shell scripting",
+    "ci/cd", "linux", "bash", "shell scripting", "algorithms", "system design",
 
     # -------- Cyber Security --------
     "cyber security", "network security", "ethical hacking",
@@ -43,19 +43,20 @@ SKILLS_DB = {
     "microcontrollers", "arduino", "raspberry pi",
     "vlsi", "verilog", "system verilog", "fpga",
     "matlab", "simulink", "power electronics",
-    "control systems", "signal processing",
+    "control systems", "signal processing","power systems",
     "digital electronics", "analog electronics", "pcb design",
+    "electrical","electrical machines",
 
     # -------- Mechanical --------
     "autocad", "solidworks", "catia", "ansys",
-    "manufacturing", "production engineering",
+    "manufacturing", "production ", "quality", 
     "thermodynamics", "fluid mechanics",
-    "machine design", "industrial engineering",
+    "machine design", "industrial engineering","mechanical",
 
     # -------- Civil --------
     "staad pro", "etabs", "autocad civil",
     "construction management", "surveying",
-    "structural engineering", "geotechnical engineering",
+    "structural engineering", "geotechnical engineering","civil",
 
     # -------- Business / Management --------
     "business analysis", "project management",
@@ -67,8 +68,16 @@ SKILLS_DB = {
     # -------- General Tools --------
     "git", "github", "gitlab",
     "postman", "swagger",
-    "confluence"
+    "confluence",
+
+    #--------- common skills---------
+    "communication", "teamwork", "problem-solving",
+    "site management", "Enginnering", "leadership", "time management",
+
+
 }
+
+
 
 # ---------------- TEXT EXTRACTION ---------------- #
 
