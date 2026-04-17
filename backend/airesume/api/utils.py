@@ -9,7 +9,7 @@ SKILLS_DB = {
     "react", "angular", "vue", "next.js",
     "node.js", "express.js",
     "django", "flask", "spring boot",
-    "rest api", "graphql",
+    "rest api", "graphql","reactjs", "angularjs", "vuejs",
 
     # -------- Databases --------
     "mysql", "postgresql", "mongodb", "sqlite",
