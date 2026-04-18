@@ -1,17 +1,18 @@
-import os,re
+import os
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
 from .models import Resume, Job
 from .utils import (
     extract_text_from_pdf,
     extract_text_from_docx,
     extract_skills,
     match_resume_to_job,
-    normalize_text,
-    SKILLS_DB,
 )
 
+
+# ---------------- UPLOAD RESUME ---------------- #
 
 @api_view(["POST"])
 def upload_resume_file(request):
@@ -20,16 +21,30 @@ def upload_resume_file(request):
 
     file = request.FILES["resume_file"]
 
-    # Basic validation for file size
+    # File size validation (2MB)
     if file.size > 2 * 1024 * 1024:
         return Response(
             {"error": "File too large. Max 2MB allowed"},
             status=400
         )
 
-    resume = Resume.objects.create(resume_file=file)
-    return Response({"message": "Uploaded successfully", "id": resume.id}, status=201)
+    # File type validation
+    ext = os.path.splitext(file.name)[1].lower()
+    if ext not in [".pdf", ".doc", ".docx"]:
+        return Response(
+            {"error": "Only PDF/DOC/DOCX files are allowed"},
+            status=400
+        )
 
+    resume = Resume.objects.create(resume_file=file)
+
+    return Response({
+        "message": "Uploaded successfully",
+        "id": resume.id
+    }, status=201)
+
+
+# ---------------- ANALYZE RESUME ---------------- #
 
 @api_view(["GET"])
 def analyze_resume(request, resume_id):
@@ -46,6 +61,7 @@ def analyze_resume(request, resume_id):
     if not os.path.exists(file_path):
         return Response({"error": "File not found on server"}, status=404)
 
+    # Detect file type
     ext = os.path.splitext(file_path)[1].lower()
 
     if ext == ".pdf":
@@ -53,35 +69,24 @@ def analyze_resume(request, resume_id):
     elif ext in [".doc", ".docx"]:
         text = extract_text_from_docx(file_path)
     else:
-        return Response({"error": "Only PDF/DOCX supported"}, status=400)
+        return Response({"error": "Unsupported file format"}, status=400)
 
     if not text.strip():
         return Response({"error": "Empty resume text"}, status=400)
 
+    # Extract resume skills
     resume_skills = extract_skills(text)
 
     recommendations = []
 
     for job in Job.objects.all():
-        
-        raw = normalize_text(job.job_required_skills)
 
-        job_skills = []
+        #  reuse extract_skills
+        job_skills = extract_skills(job.job_required_skills)
 
-        for skill in SKILLS_DB:
-            skill = skill.lower().strip()
-
-            # Single-word skills (like c, sql, java)
-            if " " not in skill and "." not in skill and "+" not in skill and "#" not in skill:
-                pattern = rf"(?<![a-z0-9]){re.escape(skill)}(?![a-z0-9])"
-                if re.search(pattern, raw):
-                    job_skills.append(skill)
-
-            # Multi-word / special skills
-            else:
-                if re.search(rf"(?<![a-z0-9]){re.escape(skill)}(?![a-z0-9])", raw):
-                    job_skills.append(skill)
-
+        # Skip jobs with no detectable skills
+        if not job_skills:
+            continue
 
         score, matched = match_resume_to_job(resume_skills, job_skills)
 
