@@ -55,6 +55,11 @@ function ResumeUpload() {
 
   return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4">
+
+    <button onClick={() => navigate("/admin-panel")}>
+      Admin
+    </button>
+
     <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-xl text-center">
 
       <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
