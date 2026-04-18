@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import backbutton from "./assets/backbutton.png";
 
 export default function AdminPanel() {
   const [form, setForm] = useState({
@@ -31,6 +33,12 @@ export default function AdminPanel() {
 
   return (
     <div>
+        <div className="absolute top-4 right-4">
+          <button onClick={() => navigate("/")} className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">
+            <backbutton className="w-5 h-5" />
+          </button>
+        </div>
+
       <h2>Add Job</h2>
 
       <input name="job_title" placeholder="Job Title" onChange={handleChange} />

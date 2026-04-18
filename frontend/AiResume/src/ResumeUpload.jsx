@@ -56,7 +56,7 @@ function ResumeUpload() {
   return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 px-4">
 
-    <button onClick={() => navigate("/admin-panel")}>
+    <button onClick={() => navigate("/admin-panel")} className="absolute top-4 right-4 bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">
       Admin
     </button>
 
