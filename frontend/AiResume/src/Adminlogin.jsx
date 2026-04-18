@@ -28,6 +28,13 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 px-4">
+
+      <button
+            onClick={() => navigate("/")}
+            className="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm"
+          >
+          Home
+      </button>
       
       <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 sm:p-8">
 
