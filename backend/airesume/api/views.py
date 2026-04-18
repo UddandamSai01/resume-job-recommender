@@ -2,6 +2,19 @@ import os
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from .models import Job
+from .serializers import JobSerializer
+
+
+@api_view(["POST"])
+def create_job(request):
+    serializer = JobSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+
+    return Response(serializer.errors, status=400)
 
 from .models import Resume, Job
 from .utils import (
@@ -110,3 +123,15 @@ def analyze_resume(request, resume_id):
             reverse=True
         )
     })
+
+# ---------------- CREATE JOB ---------------- #
+
+@api_view(["POST"])
+def create_job(request):
+    serializer = JobSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+
+    return Response(serializer.errors, status=400)
