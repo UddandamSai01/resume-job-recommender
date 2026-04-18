@@ -35,7 +35,7 @@ export default function Jobs() {
       {/* 🔙 Back Button */}
       <button
         onClick={() => navigate("/")}
-        className="absolute top-4 right-4 mb-5 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg shadow"
+        className="absolute top-4 right-4 mb-10 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg shadow"
       >
         ← Back
       </button>

@@ -29,15 +29,17 @@ export default function AdminLogin() {
   return (
 
     <>
-      {/* 🔙 Back Button */}
-      <button
-              onClick={() => navigate("/")}
-              className="bg-gray-700 mb-5 text-white px-4 py-2 rounded-lg text-sm"
-            >
-          Home
-      </button>
+      
 
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 px-4">
+
+        {/* 🔙 Back Button */}
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-4 right-4 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg shadow"
+        >
+          ← Back
+        </button>
       
         <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 sm:p-8">
 
