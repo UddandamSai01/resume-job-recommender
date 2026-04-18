@@ -40,8 +40,8 @@ export default function Jobs() {
         ← Back
       </button>
 
-      <div className="min-h-screen mt-5 bg-gray-100 p-4 sm:p-6">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center mt-6 mb-8">
+      <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mt-12 mb-8">
           Recommended Jobs
         </h2>
 
