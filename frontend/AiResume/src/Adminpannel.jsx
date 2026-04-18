@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import backbutton from "./assets/backbutton.png";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function AdminPanel() {
   const [form, setForm] = useState({
@@ -35,7 +35,7 @@ export default function AdminPanel() {
     <div>
         <div className="absolute top-4 right-4">
           <button onClick={() => navigate("/")} className="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">
-            <backbutton className="w-5 h-5" />
+            <ArrowLeftIcon className="w-5 h-5" />
           </button>
         </div>
 
