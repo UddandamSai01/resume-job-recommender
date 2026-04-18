@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminPanel() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isAuth = localStorage.getItem("adminAuth");
+    if (!isAuth) {
+      navigate("/admin-login");
+    }
+  }, []);
 
   const [form, setForm] = useState({
     job_title: "",
@@ -23,10 +30,9 @@ export default function AdminPanel() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔥 Basic validation
     for (let key in form) {
       if (!form[key]) {
-        alert("Please fill all fields ⚠️");
+        alert("Fill all fields ⚠️");
         return;
       }
     }
@@ -46,14 +52,11 @@ export default function AdminPanel() {
       );
 
       const data = await res.json();
-      console.log(data);
 
       if (!res.ok) {
-        alert("Failed to add job ❌");
+        alert("Failed ❌");
       } else {
-        alert("Job Added Successfully ✅");
-
-        // reset form
+        alert("Job Added ✅");
         setForm({
           job_title: "",
           company_name: "",
@@ -64,8 +67,7 @@ export default function AdminPanel() {
           job_apply_link: "",
         });
       }
-    } catch (error) {
-      console.error(error);
+    } catch {
       alert("Server error ❌");
     }
 
@@ -73,85 +75,59 @@ export default function AdminPanel() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      
-      {/* Back Button */}
-      <button
-        onClick={() => navigate("/")}
-        className="absolute top-4 right-4 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg shadow"
-      >
-        ← Back
-      </button>
+    <div className="min-h-screen bg-gray-100 px-4 py-6">
 
-      {/* Card */}
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-2xl">
-        
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+      {/* Top Bar */}
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold">Admin Panel</h2>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => navigate("/")}
+            className="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm"
+          >
+            Home
+          </button>
+
+          <button
+            onClick={() => {
+              localStorage.removeItem("adminAuth");
+              navigate("/admin-login");
+            }}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+
+      {/* Form Card */}
+      <div className="bg-white shadow-xl rounded-2xl p-4 sm:p-8 max-w-3xl mx-auto">
+
+        <h3 className="text-lg sm:text-xl font-semibold mb-4 text-center">
           Add Job
-        </h2>
+        </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
-          <input
-            name="job_title"
-            placeholder="Job Title"
-            value={form.job_title}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-blue-400"
-          />
+          <input name="job_title" placeholder="Job Title" value={form.job_title} onChange={handleChange} className="w-full border p-3 rounded-lg text-sm sm:text-base" />
 
-          <input
-            name="company_name"
-            placeholder="Company Name"
-            value={form.company_name}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg"
-          />
+          <input name="company_name" placeholder="Company Name" value={form.company_name} onChange={handleChange} className="w-full border p-3 rounded-lg" />
 
-          <input
-            name="job_location"
-            placeholder="Location"
-            value={form.job_location}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg"
-          />
+          <input name="job_location" placeholder="Location" value={form.job_location} onChange={handleChange} className="w-full border p-3 rounded-lg" />
 
-          <input
-            name="job_salary"
-            placeholder="Salary"
-            value={form.job_salary}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg"
-          />
+          <input name="job_salary" placeholder="Salary" value={form.job_salary} onChange={handleChange} className="w-full border p-3 rounded-lg" />
 
-          <textarea
-            name="job_description"
-            placeholder="Job Description"
-            value={form.job_description}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg h-24"
-          />
+          <textarea name="job_description" placeholder="Job Description" value={form.job_description} onChange={handleChange} className="w-full border p-3 rounded-lg h-24" />
 
-          <textarea
-            name="job_required_skills"
-            placeholder="Required Skills (comma separated)"
-            value={form.job_required_skills}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg h-20"
-          />
+          <textarea name="job_required_skills" placeholder="Skills (comma separated)" value={form.job_required_skills} onChange={handleChange} className="w-full border p-3 rounded-lg h-20" />
 
-          <input
-            name="job_apply_link"
-            placeholder="Apply Link"
-            value={form.job_apply_link}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg"
-          />
+          <input name="job_apply_link" placeholder="Apply Link" value={form.job_apply_link} onChange={handleChange} className="w-full border p-3 rounded-lg" />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold"
           >
             {loading ? "Adding..." : "Add Job"}
           </button>

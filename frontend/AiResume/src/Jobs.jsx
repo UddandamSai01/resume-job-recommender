@@ -28,7 +28,15 @@ export default function Jobs() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h2 className="text-3xl font-bold text-center mb-8">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-4 right-4  bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-lg shadow"
+      >
+        ← Back
+      </button>
+
+      <h2 className="text-3xl font-bold text-center mt-3 mb-8">
         Recommended Jobs
       </h2>
 
