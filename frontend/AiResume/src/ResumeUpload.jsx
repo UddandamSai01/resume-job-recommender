@@ -63,7 +63,7 @@ function ResumeUpload() {
     <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-xl text-center">
 
       <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-        AI Resume Analyzer
+        Resume Analyzer
       </h1>
 
       <p className="text-gray-500 mb-6">
