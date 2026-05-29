@@ -1,0 +1,68 @@
+
+---------------------------------------------------Backend floder Structure--------------------------------------------------
+
+
+backend/
+└── airesume/
+    ├── airesume/
+    │   ├── settings.py
+    │   ├── urls.py
+    │   ├── wsgi.py
+    │   └── asgi.py
+    │
+    ├── api/
+    │   ├── migrations/
+    │   ├── models.py
+    │   ├── serializers.py
+    │   ├── views.py
+    │   ├── urls.py
+    │   ├── utils.py
+    │   └── admin.py
+    │
+    ├── manage.py
+    └── requirements.txt
+
+
+
+---------------------------------------------------Frontend floder Structure--------------------------------------------------
+
+
+frontend/
+└── AiResume/
+    ├── src/
+    │   ├── main.jsx
+    │   ├── App.jsx
+    │   ├── App.css
+    │   ├── index.css
+    │   │
+    │   ├── ResumeUpload.jsx
+    │   ├── Jobs.jsx
+    │   ├── JobModal.jsx
+    │   ├── Loader.jsx
+    │   │
+    │   ├── Adminlogin.jsx
+    │   ├── Adminpannel.jsx
+    │   │
+    │   ├── JobModal.css
+    │   └── Loader.css
+    │
+    ├── package.json
+    ├── vite.config.js
+    └── vercel.json
+
+
+---------------------------------------------------Project Wroking Structure--------------------------------------------------
+
+React Frontend
+      ↓
+Axios for API Calls
+      ↓
+Django REST API
+      ↓
+Business Logic (Views)
+      ↓
+MySQL Database
+      ↓
+Response (JSON)
+      ↓
+React UI Display

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -40,23 +41,25 @@ export default function AdminPanel() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        "https://ai-resume-job-recommender-nr9o.onrender.com/api/create-job/",
+
+      const API_URL =
+        window.location.hostname === "localhost"
+          ? "http://127.0.0.1:8000"
+          : "https://ai-resume-job-recommender-nr9o.onrender.com";
+
+      const res = await axios.post(
+        `${API_URL}/api/create-job/`,
+        form,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(form),
         }
       );
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert("Failed ❌");
-      } else {
+      if (res.status === 200 || res.status === 201) {
         alert("Job Added ✅");
+
         setForm({
           job_title: "",
           company_name: "",
@@ -67,9 +70,16 @@ export default function AdminPanel() {
           job_apply_link: "",
         });
       }
-    } catch {
+
+    } catch (error) {
+    console.log(error);
+
+    if (error.response) {
+      alert("Failed ❌");
+    } else {
       alert("Server error ❌");
     }
+}
 
     setLoading(false);
   };

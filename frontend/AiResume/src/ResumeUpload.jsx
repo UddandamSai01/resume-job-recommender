@@ -8,7 +8,9 @@ function ResumeUpload() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API = "https://ai-resume-job-recommender-nr9o.onrender.com";
+  const API = window.location.hostname === "localhost"
+        ? "http://127.0.0.1:8000"
+        : "https://ai-resume-job-recommender-nr9o.onrender.com";
   
   const navigate = useNavigate();
 
@@ -67,7 +69,7 @@ function ResumeUpload() {
       </h1>
 
       <p className="text-gray-500 mb-6">
-        Upload your resume and get AI-powered job recommendations
+        Upload your resume and get job recommendations
       </p>
 
       <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 mb-6">

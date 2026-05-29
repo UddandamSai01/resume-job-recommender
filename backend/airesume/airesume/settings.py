@@ -8,16 +8,19 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ---------------- SECURITY ---------------- #
+# ================= SECURITY =================
 
 SECRET_KEY = 'django-insecure-5e^$9aqy88_gj%p(2r@a$2x_$qve#otg0tf8+ie^om!-&qw2yy'
 
-# Debug (True for local, False for Render)
 DEBUG = os.environ.get("RENDER") is None
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".onrender.com"]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    ".onrender.com",
+]
 
-# ---------------- APPLICATIONS ---------------- #
+# ================= APPLICATIONS =================
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,26 +32,27 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+
     'api',
 ]
 
-# ---------------- MIDDLEWARE ---------------- #
+# ================= MIDDLEWARE =================
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ---------------- URL / TEMPLATES ---------------- #
+# ================= URLS =================
 
 ROOT_URLCONF = 'airesume.urls'
 
@@ -69,7 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'airesume.wsgi.application'
 
-# ---------------- DATABASE (FIXED) ---------------- #
+# ================= DATABASE =================
 
 db_url = os.environ.get("DATABASE_URL")
 
@@ -80,40 +84,57 @@ if db_url:
 else:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "airesume_db",
+            "USER": "root",
+            "PASSWORD": "tiger",
+            "HOST": "localhost",
+            "PORT": "3306",
         }
     }
 
-# ---------------- PASSWORD VALIDATION ---------------- #
+# ================= PASSWORD VALIDATION =================
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {"NAME": 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {"NAME": 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {"NAME": 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
-# ---------------- INTERNATIONAL ---------------- #
+# ================= INTERNATIONALIZATION =================
 
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
+
 USE_I18N = True
+
 USE_TZ = True
 
-# ---------------- STATIC FILES ---------------- #
+# ================= STATIC FILES =================
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# ---------------- MEDIA FILES ---------------- #
+# ================= MEDIA FILES =================
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
-# ---------------- CORS ---------------- #
+# ================= CORS =================
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
     "https://ai-resume-job-recommender.vercel.app",
 ]
 
@@ -127,3 +148,7 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+# ================= DEFAULT PRIMARY KEY =================
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
